@@ -17,6 +17,7 @@ class DraggableViewBackground: UIView {
     var allCards: [DraggableView]!
     var cardsLoadedIndex: Int!
     var loadedCards: [DraggableView]!
+
     var menuButton: UIButton!
     var messageButton: UIButton!
     var checkButton: UIButton!

@@ -9,12 +9,19 @@
 import Foundation
 import UIKit
 
-let ACTION_MARGIN: CGFloat = 120      //%%% distance from center where the action applies. Higher = swipe further in order for the action to be called
-let SCALE_STRENGTH: CGFloat = 4       //%%% how quickly the card shrinks. Higher = slower shrinking
-let SCALE_MAX:CGFloat = 0.93          //%%% upper bar for how much the card shrinks. Higher = shrinks less
-let ROTATION_MAX: CGFloat = 1         //%%% the maximum rotation allowed in radians.  Higher = card can keep rotating longer
-let ROTATION_STRENGTH: CGFloat = 320  //%%% strength of rotation. Higher = weaker rotation
-let ROTATION_ANGLE: CGFloat = 3.14/8  //%%% Higher = stronger rotation angle
+/// Distance from center where the action applies.
+/// Higher = swipe further in order for the action to be called.
+let ACTION_MARGIN: CGFloat = 120
+/// How quickly the card shrinks. Higher = slower shrinking.
+let SCALE_STRENGTH: CGFloat = 4
+/// Upper bar for how much the card shrinks. Higher = shrinks less.
+let SCALE_MAX:CGFloat = 0.93
+/// Maximum rotation allowed in radians. Higher = card can rotate further.
+let ROTATION_MAX: CGFloat = 1
+/// Strength of rotation. Higher = weaker rotation.
+let ROTATION_STRENGTH: CGFloat = 320
+/// Higher = stronger rotation angle
+let ROTATION_ANGLE: CGFloat = 3.14/8
 let MAX_OVERLAY_ALPHA: CGFloat = 0.4
 
 protocol DraggableViewDelegate {
