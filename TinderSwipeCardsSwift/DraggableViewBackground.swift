@@ -10,13 +10,11 @@ import Foundation
 import UIKit
 
 class DraggableViewBackground: UIView {
-    var exampleCardLabels: [String]!
-    var allCards: [DraggableView]!
-
     let MAX_BUFFER_SIZE = 2
     let CARD_HEIGHT: CGFloat = 386
     let CARD_WIDTH: CGFloat = 290
 
+    var allCards: [DraggableView]!
     var cardsLoadedIndex: Int!
     var loadedCards: [DraggableView]!
     var menuButton: UIButton!
@@ -32,14 +30,14 @@ class DraggableViewBackground: UIView {
         super.init(frame: frame)
         super.layoutSubviews()
         self.setupView()
-        exampleCardLabels = ["first", "second", "third", "fourth", "last"]
+
         allCards = []
         loadedCards = []
         cardsLoadedIndex = 0
-        self.loadCards()
+        self.loadCards(["first", "second", "third", "fourth", "last"])
     }
 
-    func setupView() -> Void {
+    func setupView() {
         self.backgroundColor = UIColor(red: 0.92, green: 0.93, blue: 0.95, alpha: 1)
 
         xButton = UIButton(frame: CGRectMake((self.frame.size.width - CARD_WIDTH)/2 + 35, self.frame.size.height/2 + CARD_HEIGHT/2 + 10, 59, 59))
@@ -54,11 +52,11 @@ class DraggableViewBackground: UIView {
         self.addSubview(checkButton)
     }
 
-    func loadCards() -> Void {
-        if exampleCardLabels.count > 0 {
-            let numLoadedCardsCap = min(exampleCardLabels.count, MAX_BUFFER_SIZE)
-            for var i = 0; i < exampleCardLabels.count; i++ {
-                let newCard = createDraggableViewWithLabel(exampleCardLabels[i])
+    func loadCards(labels: [String]) {
+        if labels.count > 0 {
+            let numLoadedCardsCap = min(labels.count, MAX_BUFFER_SIZE)
+            for var i = 0; i < labels.count; i++ {
+                let newCard = createDraggableViewWithLabel(labels[i])
                 allCards.append(newCard)
                 if i < numLoadedCardsCap {
                     loadedCards.append(newCard)
@@ -86,7 +84,7 @@ class DraggableViewBackground: UIView {
         return draggableView
     }
 
-    func swipeRight() -> Void {
+    func swipeRight() {
         if loadedCards.count <= 0 {
             return
         }
@@ -99,7 +97,7 @@ class DraggableViewBackground: UIView {
         dragView.rightClickAction()
     }
 
-    func swipeLeft() -> Void {
+    func swipeLeft() {
         if loadedCards.count <= 0 {
             return
         }
@@ -114,23 +112,22 @@ class DraggableViewBackground: UIView {
 }
 
 extension DraggableViewBackground : DraggableViewDelegate {
-    func cardSwipedLeft(card: UIView) -> Void {
-        loadedCards.removeAtIndex(0)
-
-        if cardsLoadedIndex < allCards.count {
-            loadedCards.append(allCards[cardsLoadedIndex])
-            cardsLoadedIndex = cardsLoadedIndex + 1
-            self.insertSubview(loadedCards[MAX_BUFFER_SIZE - 1], belowSubview: loadedCards[MAX_BUFFER_SIZE - 2])
-        }
+    func cardSwipedLeft(card: UIView) {
+        loadAnotherCard()
     }
 
-    func cardSwipedRight(card: UIView) -> Void {
+    func cardSwipedRight(card: UIView) {
+        loadAnotherCard()
+    }
+
+    private func loadAnotherCard() {
         loadedCards.removeAtIndex(0)
 
         if cardsLoadedIndex < allCards.count {
-            loadedCards.append(allCards[cardsLoadedIndex])
+            let nextCard = allCards[cardsLoadedIndex]
+            loadedCards.append(nextCard)
             cardsLoadedIndex = cardsLoadedIndex + 1
-            self.insertSubview(loadedCards[MAX_BUFFER_SIZE - 1], belowSubview: loadedCards[MAX_BUFFER_SIZE - 2])
+            self.insertSubview(nextCard, belowSubview: loadedCards[loadedCards.count - 2])
         }
     }
 }
