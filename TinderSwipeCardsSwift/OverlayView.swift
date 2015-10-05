@@ -15,10 +15,10 @@ enum GGOverlayViewMode {
 }
 
 class OverlayView: UIView{
-    var _mode: GGOverlayViewMode! = GGOverlayViewMode.GGOverlayViewModeLeft
-    var imageView: UIImageView!
+    private var mode = GGOverlayViewMode.GGOverlayViewModeLeft
+    private var imageView: UIImageView!
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -29,16 +29,14 @@ class OverlayView: UIView{
         self.addSubview(imageView)
     }
 
-    func setMode(mode: GGOverlayViewMode) -> Void {
-        if _mode == mode {
-            return
-        }
-        _mode = mode
-
-        if _mode == GGOverlayViewMode.GGOverlayViewModeLeft {
-            imageView.image = UIImage(named: "noButton")
-        } else {
-            imageView.image = UIImage(named: "yesButton")
+    func setMode(newMode: GGOverlayViewMode) {
+        if mode != newMode {
+            mode = newMode
+            if mode == GGOverlayViewMode.GGOverlayViewModeLeft {
+                imageView.image = UIImage(named: "noButton")
+            } else {
+                imageView.image = UIImage(named: "yesButton")
+            }
         }
     }
 
