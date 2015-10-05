@@ -10,18 +10,18 @@ import Foundation
 import UIKit
 
 class DraggableViewBackground: UIView {
-    let MAX_BUFFER_SIZE = 2
-    let CARD_HEIGHT: CGFloat = 386
-    let CARD_WIDTH: CGFloat = 290
+    private let MAX_BUFFER_SIZE = 2
+    private let CARD_HEIGHT: CGFloat = 386
+    private let CARD_WIDTH: CGFloat = 290
 
-    var allCards: [DraggableView]!
-    var cardsLoadedIndex: Int!
-    var loadedCards: [DraggableView]!
+    private var allCards: [DraggableView]!
+    private var cardsLoadedIndex: Int!
+    private var loadedCards: [DraggableView]!
 
-    var menuButton: UIButton!
-    var messageButton: UIButton!
-    var checkButton: UIButton!
-    var xButton: UIButton!
+    private var menuButton: UIButton!
+    private var messageButton: UIButton!
+    private var checkButton: UIButton!
+    private var xButton: UIButton!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -38,7 +38,7 @@ class DraggableViewBackground: UIView {
         self.loadCards(["first", "second", "third", "fourth", "last"])
     }
 
-    func setupView() {
+    private func setupView() {
         self.backgroundColor = UIColor(red: 0.92, green: 0.93, blue: 0.95, alpha: 1)
 
         xButton = UIButton(frame: CGRectMake((self.frame.size.width - CARD_WIDTH)/2 + 35, self.frame.size.height/2 + CARD_HEIGHT/2 + 10, 59, 59))
@@ -53,7 +53,7 @@ class DraggableViewBackground: UIView {
         self.addSubview(checkButton)
     }
 
-    func loadCards(labels: [String]) {
+    private func loadCards(labels: [String]) {
         if labels.count > 0 {
             let numLoadedCardsCap = min(labels.count, MAX_BUFFER_SIZE)
             for var i = 0; i < labels.count; i++ {
@@ -75,7 +75,7 @@ class DraggableViewBackground: UIView {
         }
     }
 
-    func createDraggableViewWithLabel(label: String) -> DraggableView {
+    private func createDraggableViewWithLabel(label: String) -> DraggableView {
         let frame = CGRectMake((self.frame.size.width - CARD_WIDTH)/2,
                                (self.frame.size.height - CARD_HEIGHT)/2,
                                CARD_WIDTH, CARD_HEIGHT)

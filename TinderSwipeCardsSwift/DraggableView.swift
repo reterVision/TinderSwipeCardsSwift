@@ -30,12 +30,12 @@ protocol DraggableViewDelegate {
 }
 
 class DraggableView: UIView {
-    var delegate: DraggableViewDelegate!
-    var panGestureRecognizer: UIPanGestureRecognizer!
-    var originPoint: CGPoint!
-    var overlayView: OverlayView!
-    var information: UILabel!
-    var xFromDragOrigin: CGFloat!
+    private var delegate: DraggableViewDelegate!
+    private var panGestureRecognizer: UIPanGestureRecognizer!
+    private var originPoint: CGPoint!
+    private var overlayView: OverlayView!
+    private var information: UILabel!
+    private var xFromDragOrigin: CGFloat!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -109,7 +109,7 @@ class DraggableView: UIView {
         }
     }
 
-    func updateOverlay(distance: CGFloat) {
+    private func updateOverlay(distance: CGFloat) {
         if distance > 0 {
             overlayView.setMode(GGOverlayViewMode.GGOverlayViewModeRight)
         } else {
@@ -118,7 +118,7 @@ class DraggableView: UIView {
         overlayView.alpha = min(fabs(distance)/100, MAX_OVERLAY_ALPHA)
     }
 
-    func afterSwipeAction() {
+    private func afterSwipeAction() {
         if xFromDragOrigin > ACTION_MARGIN {
             completeSwipeRight()
         } else if xFromDragOrigin < -ACTION_MARGIN {
@@ -142,7 +142,7 @@ class DraggableView: UIView {
         completeSwipe(finishX:-600, rotateRadians:-ROTATION_MAX, callback:delegate.cardSwipedLeft)
     }
 
-    func completeSwipe(finishX finishX: CGFloat,
+    private func completeSwipe(finishX finishX: CGFloat,
                        rotateRadians: CGFloat,
                        callback: UIView -> ()) {
         let finishPoint = CGPointMake(finishX, self.center.y)

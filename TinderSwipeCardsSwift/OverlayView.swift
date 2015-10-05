@@ -15,8 +15,8 @@ enum GGOverlayViewMode {
 }
 
 class OverlayView: UIView{
-    var _mode: GGOverlayViewMode! = GGOverlayViewMode.GGOverlayViewModeLeft
-    var imageView: UIImageView!
+    private var mode = GGOverlayViewMode.GGOverlayViewModeLeft
+    private var imageView: UIImageView!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
