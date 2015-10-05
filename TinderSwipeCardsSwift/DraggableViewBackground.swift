@@ -91,10 +91,9 @@ class DraggableViewBackground: UIView {
         let dragView: DraggableView = loadedCards[0]
         dragView.overlayView.setMode(GGOverlayViewMode.GGOverlayViewModeRight)
         UIView.animateWithDuration(0.2, animations: {
-            () -> Void in
             dragView.overlayView.alpha = 1
         })
-        dragView.rightClickAction()
+        dragView.completeSwipeRight()
     }
 
     func swipeLeft() {
@@ -104,10 +103,9 @@ class DraggableViewBackground: UIView {
         let dragView: DraggableView = loadedCards[0]
         dragView.overlayView.setMode(GGOverlayViewMode.GGOverlayViewModeLeft)
         UIView.animateWithDuration(0.2, animations: {
-            () -> Void in
             dragView.overlayView.alpha = 1
         })
-        dragView.leftClickAction()
+        dragView.completeSwipeLeft()
     }
 }
 

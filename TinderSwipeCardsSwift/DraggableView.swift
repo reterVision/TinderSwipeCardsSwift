@@ -17,8 +17,8 @@ let ROTATION_STRENGTH: Float = 320  //%%% strength of rotation. Higher = weaker 
 let ROTATION_ANGLE: Float = 3.14/8  //%%% Higher = stronger rotation angle
 
 protocol DraggableViewDelegate {
-    func cardSwipedLeft(card: UIView) -> Void
-    func cardSwipedRight(card: UIView) -> Void
+    func cardSwipedLeft(card: UIView)
+    func cardSwipedRight(card: UIView)
 }
 
 class DraggableView: UIView {
@@ -59,14 +59,14 @@ class DraggableView: UIView {
         yFromCenter = 0
     }
 
-    func setupView() -> Void {
+    func setupView() {
         self.layer.cornerRadius = 4;
         self.layer.shadowRadius = 3;
         self.layer.shadowOpacity = 0.2;
         self.layer.shadowOffset = CGSizeMake(1, 1);
     }
 
-    func beingDragged(gestureRecognizer: UIPanGestureRecognizer) -> Void {
+    func beingDragged(gestureRecognizer: UIPanGestureRecognizer) {
         xFromCenter = Float(gestureRecognizer.translationInView(self).x)
         yFromCenter = Float(gestureRecognizer.translationInView(self).y)
         
@@ -97,7 +97,7 @@ class DraggableView: UIView {
         }
     }
 
-    func updateOverlay(distance: CGFloat) -> Void {
+    func updateOverlay(distance: CGFloat) {
         if distance > 0 {
             overlayView.setMode(GGOverlayViewMode.GGOverlayViewModeRight)
         } else {
@@ -106,68 +106,39 @@ class DraggableView: UIView {
         overlayView.alpha = CGFloat(min(fabsf(Float(distance))/100, 0.4))
     }
 
-    func afterSwipeAction() -> Void {
+    func afterSwipeAction() {
         let floatXFromCenter = Float(xFromCenter)
         if floatXFromCenter > ACTION_MARGIN {
-            self.rightAction()
+            completeSwipeRight()
         } else if floatXFromCenter < -ACTION_MARGIN {
-            self.leftAction()
+            completeSwipeLeft()
         } else {
-            UIView.animateWithDuration(0.3, animations: {() -> Void in
+            UIView.animateWithDuration(0.3, animations: {() in
                 self.center = self.originPoint
                 self.transform = CGAffineTransformMakeRotation(0)
                 self.overlayView.alpha = 0
             })
         }
     }
-    
-    func rightAction() -> Void {
-        let finishPoint: CGPoint = CGPointMake(500, 2 * CGFloat(yFromCenter) + self.originPoint.y)
-        UIView.animateWithDuration(0.3,
-            animations: {
-                self.center = finishPoint
-            }, completion: {
-                (value: Bool) in
-                self.removeFromSuperview()
-        })
-        delegate.cardSwipedRight(self)
+
+    func completeSwipeRight() {
+        completeSwipe(finishX:600, rotateRadians:1, callback:delegate.cardSwipedRight)
     }
 
-    func leftAction() -> Void {
-        let finishPoint: CGPoint = CGPointMake(-500, 2 * CGFloat(yFromCenter) + self.originPoint.y)
-        UIView.animateWithDuration(0.3,
-            animations: {
-                self.center = finishPoint
-            }, completion: {
-                (value: Bool) in
-                self.removeFromSuperview()
-        })
-        delegate.cardSwipedLeft(self)
+    func completeSwipeLeft() {
+        completeSwipe(finishX:-600, rotateRadians:-1, callback:delegate.cardSwipedLeft)
     }
 
-    func rightClickAction() -> Void {
-        let finishPoint = CGPointMake(600, self.center.y)
+    func completeSwipe(finishX finishX: CGFloat, rotateRadians: CGFloat, callback: UIView -> ()) {
+        let finishPoint = CGPointMake(finishX, self.center.y)
         UIView.animateWithDuration(0.3,
             animations: {
                 self.center = finishPoint
-                self.transform = CGAffineTransformMakeRotation(1)
+                self.transform = CGAffineTransformMakeRotation(rotateRadians)
             }, completion: {
                 (value: Bool) in
                 self.removeFromSuperview()
         })
-        delegate.cardSwipedRight(self)
-    }
-
-    func leftClickAction() -> Void {
-        let finishPoint: CGPoint = CGPointMake(-600, self.center.y)
-        UIView.animateWithDuration(0.3,
-            animations: {
-                self.center = finishPoint
-                self.transform = CGAffineTransformMakeRotation(1)
-            }, completion: {
-                (value: Bool) in
-                self.removeFromSuperview()
-        })
-        delegate.cardSwipedLeft(self)
+        callback(self)
     }
 }
