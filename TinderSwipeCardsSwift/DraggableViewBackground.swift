@@ -42,11 +42,11 @@ class DraggableViewBackground: UIView {
 
         xButton = UIButton(frame: CGRectMake((self.frame.size.width - CARD_WIDTH)/2 + 35, self.frame.size.height/2 + CARD_HEIGHT/2 + 10, 59, 59))
         xButton.setImage(UIImage(named: "xButton"), forState: UIControlState.Normal)
-        xButton.addTarget(self, action: "swipeLeft", forControlEvents: UIControlEvents.TouchUpInside)
+        xButton.addTarget(self, action: "fakeSwipeLeft", forControlEvents: UIControlEvents.TouchUpInside)
 
         checkButton = UIButton(frame: CGRectMake(self.frame.size.width/2 + CARD_WIDTH/2 - 85, self.frame.size.height/2 + CARD_HEIGHT/2 + 10, 59, 59))
         checkButton.setImage(UIImage(named: "checkButton"), forState: UIControlState.Normal)
-        checkButton.addTarget(self, action: "swipeRight", forControlEvents: UIControlEvents.TouchUpInside)
+        checkButton.addTarget(self, action: "fakeSwipeRight", forControlEvents: UIControlEvents.TouchUpInside)
 
         self.addSubview(xButton)
         self.addSubview(checkButton)
@@ -84,28 +84,18 @@ class DraggableViewBackground: UIView {
         return draggableView
     }
 
-    func swipeRight() {
-        if loadedCards.count <= 0 {
-            return
+    func fakeSwipeRight() {
+        if loadedCards.count > 0 {
+            let dragView: DraggableView = loadedCards[0]
+            dragView.completeSwipeRight()
         }
-        let dragView: DraggableView = loadedCards[0]
-        dragView.overlayView.setMode(GGOverlayViewMode.GGOverlayViewModeRight)
-        UIView.animateWithDuration(0.2, animations: {
-            dragView.overlayView.alpha = 1
-        })
-        dragView.completeSwipeRight()
     }
 
-    func swipeLeft() {
-        if loadedCards.count <= 0 {
-            return
+    func fakeSwipeLeft() {
+        if loadedCards.count > 0 {
+            let dragView: DraggableView = loadedCards[0]
+            dragView.completeSwipeLeft()
         }
-        let dragView: DraggableView = loadedCards[0]
-        dragView.overlayView.setMode(GGOverlayViewMode.GGOverlayViewModeLeft)
-        UIView.animateWithDuration(0.2, animations: {
-            dragView.overlayView.alpha = 1
-        })
-        dragView.completeSwipeLeft()
     }
 }
 
