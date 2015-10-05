@@ -65,7 +65,13 @@ class DraggableView: UIView {
         xFromDragOrigin = 0
     }
 
-    func setupView() {
+    convenience init(frame: CGRect, label: String, delegate: DraggableViewDelegate) {
+        self.init(frame: frame)
+        self.information.text = label
+        self.delegate = delegate
+    }
+
+    private func setupView() {
         self.layer.cornerRadius = 4;
         self.layer.shadowRadius = 3;
         self.layer.shadowOpacity = 0.2;
